@@ -14,17 +14,25 @@ class TodoApi {
     @GetMapping("/api/v1/task")
     public ResponseDto<List<TaskDto>> getAllTasks() {
         ResponseDto<List<TaskDto>> response = new ResponseDto<>();
-        response.code = "0000";
-        response.response = tasks;
+        response.setCode("0000");
+        response.setResponse(tasks);
         return response;
     }
 
     @PostMapping("/api/v1/task")
     public ResponseDto<String> createTask(@RequestBody TaskDto task) {
+        // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
+        // del nuevo elemento
+        if (tasks.size() > 0) {
+            TaskDto lastTask = tasks.get(tasks.size() - 1);
+            task.setTaskId(lastTask.getTaskId() + 1);
+        } else {
+            task.setTaskId(1);
+        }
         tasks.add(task);
         ResponseDto<String> response = new ResponseDto<>();
-        response.code = "0000";
-        response.response = "Task created";
+        response.setCode("0000");
+        response.setResponse("Task created");
         return response;
     }
 }
