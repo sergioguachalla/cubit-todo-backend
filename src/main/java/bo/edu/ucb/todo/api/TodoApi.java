@@ -14,7 +14,17 @@ class TodoApi {
     private List<TaskDto> tasks = new ArrayList<>();
 
     @GetMapping("/api/v1/task")
-    public ResponseDto<List<TaskDto>> getAllTasks() {
+    public ResponseDto<List<TaskDto>> getAllTasks(
+        @RequestHeader("Authorization") String token
+    ) {
+        AuthBl authBl = new AuthBl();
+        if (!authBl.validateToken(token)) {
+            ResponseDto<List<TaskDto>> response = new ResponseDto<>();
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }
         ResponseDto<List<TaskDto>> response = new ResponseDto<>();
         response.setCode("0000");
         response.setResponse(tasks);

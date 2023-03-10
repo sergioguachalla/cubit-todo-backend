@@ -1,12 +1,15 @@
 GET http://localhost:9999/api/v1/task
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTQ
 
 ###
 GET http://localhost:9999/api/v1/task/40
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTQ
 
 ###
 POST http://localhost:9999/api/v1/task
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0IiwiZXhwIjoxNTQ
 
 {
   "description": "task description 444",
