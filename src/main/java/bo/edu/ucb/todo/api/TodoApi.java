@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import bo.edu.ucb.todo.dto.*;
+import bo.edu.ucb.todo.bl.*;
 @RestController
 class TodoApi {
 
@@ -15,8 +17,7 @@ class TodoApi {
 
     @GetMapping("/api/v1/task")
     public ResponseDto<List<TaskDto>> getAllTasks(
-        @RequestHeader("Authorization") String token
-    ) {
+        @RequestHeader("Authorization") String token) {
         AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
             ResponseDto<List<TaskDto>> response = new ResponseDto<>();
@@ -32,8 +33,15 @@ class TodoApi {
     }
 
     @GetMapping("/api/v1/task/{idTask}")
-    public ResponseDto<TaskDto> getTaskById( @PathVariable("idTask") Integer id) {
+    public ResponseDto<TaskDto> getTaskById( @PathVariable("idTask") Integer id, @RequestHeader("Authorization") String token) {
         ResponseDto<TaskDto> response = new ResponseDto<>();
+        AuthBl authBl = new AuthBl();
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }
         //Buscamos el elemento en la lista
         TaskDto task = tasks.stream()
                 .filter(t -> t.getTaskId().equals(id))
@@ -55,8 +63,15 @@ class TodoApi {
     }
 
     @PutMapping("/api/v1/task/{idtask}")
-    public ResponseDto<TaskDto> updateTaskById( @PathVariable Integer idTask, @RequestBody TaskDto newTask) {
+    public ResponseDto<TaskDto> updateTaskById( @PathVariable Integer idTask, @RequestBody TaskDto newTask, @RequestHeader("Authorization") String token) {
         ResponseDto<TaskDto> response = new ResponseDto<>();
+        AuthBl authBl = new AuthBl();
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }
         //Buscamos el elemento en la lista
         TaskDto task = tasks.stream()
                 .filter(t -> t.getTaskId().equals(idTask))
@@ -83,7 +98,15 @@ class TodoApi {
     }
 
     @PostMapping("/api/v1/task")
-    public ResponseDto<String> createTask(@RequestBody TaskDto task) {
+    public ResponseDto<String> createTask(@RequestBody TaskDto task, @RequestHeader("Authorization") String token) {
+        ResponseDto<String> response = new ResponseDto<>();
+        AuthBl authBl = new AuthBl();
+        if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }
         // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
         // del nuevo elemento
         if (tasks.size() > 0) {
@@ -93,7 +116,7 @@ class TodoApi {
             task.setTaskId(1);
         }
         tasks.add(task);
-        ResponseDto<String> response = new ResponseDto<>();
+        
         response.setCode("0000");
         response.setResponse("Task created");
         return response;

@@ -3,6 +3,9 @@ package bo.edu.ucb.todo.bl;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 import bo.edu.ucb.todo.dto.LoginDto;
 import bo.edu.ucb.todo.dto.TokenDto;
@@ -42,18 +45,22 @@ public class AuthBl {
     }
 
     public boolean validateToken(String token) {
+        if(token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
         DecodedJWT decodedJWT;
         try {
             Algorithm algorithm = Algorithm.HMAC256(KEY);
             JWTVerifier verifier = JWT.require(algorithm)
                 // specify an specific claim validations
-                .withIssuer("auth0")
+                .withIssuer("www.ucb.edu.bo")
                 // reusable verifier instance
                 .build();
-                
             decodedJWT = verifier.verify(token);
+            return true;
         } catch (JWTVerificationException exception){
-            // Invalid signature/claims
-        }
+            System.err.print("Token invalido: " + exception.getMessage());
+            return false;
+        } 
     }
 }
