@@ -22,11 +22,10 @@ class AuthApi {
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid credentials");
-            return response;
         } else {
             response.setCode("0000");
             response.setResponse(tokenDto);
-            return response;
         }
+        return response;
     }
 }
