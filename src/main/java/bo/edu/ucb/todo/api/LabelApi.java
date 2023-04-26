@@ -4,14 +4,13 @@ import bo.edu.ucb.todo.bl.AuthBl;
 import bo.edu.ucb.todo.bl.LabelBl;
 import bo.edu.ucb.todo.dto.LabelDto;
 import bo.edu.ucb.todo.dto.ResponseDto;
-import bo.edu.ucb.todo.dto.LabelDto;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class LabelApi {
 
     private LabelBl labelBl;

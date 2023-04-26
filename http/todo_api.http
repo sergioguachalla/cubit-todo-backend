@@ -13,7 +13,8 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cudWNiL
 
 {
   "description": "task description 444",
-  "date": "2019-01-01T00:00:00Z"
+  "date": "2019-01-01T00:00:00Z",
+  "labelIds": [1, 2 ]
 }
 
 
