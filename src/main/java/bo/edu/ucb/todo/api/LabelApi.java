@@ -26,15 +26,16 @@ public class LabelApi {
      */
     @GetMapping("/api/v1/label")
     public ResponseDto<List<LabelDto>> getAllLabels(
-            @RequestHeader("Authorization") String token) {
-        AuthBl authBl = new AuthBl();
+            //@RequestHeader("Authorization") String token
+            ) {
+        /*AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
             ResponseDto<List<LabelDto>> response = new ResponseDto<>();
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }
+        }*/
         ResponseDto<List<LabelDto>> response = new ResponseDto<>();
         response.setCode("0000");
         response.setResponse(this.labelBl.getAllLabels());
@@ -62,7 +63,7 @@ public class LabelApi {
         // Si no existe retornamos un error
         if (label == null) {
             //FIXME: Cambiar el codigo de error debe retornar 404
-            response.setCode("0001");
+            response.setCode("404");
             response.setResponse(null);
             response.setErrorMessage("Label not found");
             return response;

@@ -8,15 +8,16 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.util.Date;
 import bo.edu.ucb.todo.dto.LoginDto;
-import bo.edu.ucb.todo.dto.TokenDto;
+import bo.edu.ucb.todo.dto.*;
+import bo.edu.ucb.todo.dto.ResponseDto;
 
 public class AuthBl {
 
     public static final String KEY = "TigreCampeon2023";
 
     public TokenDto login(LoginDto login) {
-        if ("jperez".equals(login.getUsername()) &&
-        "12345678".equals(login.getPassword())) {
+        if ("admin".equals(login.getUsername()) &&
+        "admin".equals(login.getPassword())) {
             TokenDto tokenDto = new TokenDto();
             tokenDto.setAuthToken(generateToken(100, "Juan Perez", "AUTH", 30));
             tokenDto.setRefreshToken(generateToken(100, "Juan Perez", "REFRESH", 60));
@@ -25,8 +26,28 @@ public class AuthBl {
             return null;
         }
 
-    }
-
+   }
+    /*public ResponseDto<TokenDto> login(LoginDto login) {
+        ResponseDto<TokenDto> response = new ResponseDto<>();
+        if ("jperez".equals(login.getUsername()) && "12345678".equals(login.getPassword())) {
+            TokenDto tokenDto = new TokenDto();
+            tokenDto.setAuthToken(generateToken(100, "Juan Perez", "AUTH", 30));
+            tokenDto.setRefreshToken(generateToken(100, "Juan Perez", "REFRESH", 60));
+            response.setCode("0000");
+            response.setResponse(tokenDto);
+        } else {
+            response.setCode("0001");
+            response.setErrorMessage("Invalid credentials");
+            response.setResponse(null);
+        }
+        return response;
+    }*/
+    
+    
+    
+    
+   
+    
     private String  generateToken(Integer userId, String name, String type, int minutes) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(KEY);
