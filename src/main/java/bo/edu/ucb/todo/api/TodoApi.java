@@ -17,18 +17,21 @@ class TodoApi {
      */
     @GetMapping("/api/v1/task")
     public ResponseDto<List<TaskDto>> getAllTasks(
-        @RequestHeader("Authorization") String token) {
+       // @RequestHeader("Authorization") String token
+        )
+         {
         AuthBl authBl = new AuthBl();
-        if (!authBl.validateToken(token)) {
+        /*if (!authBl.validateToken(token)) {
             ResponseDto<List<TaskDto>> response = new ResponseDto<>();
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }
+        }*/
         ResponseDto<List<TaskDto>> response = new ResponseDto<>();
         response.setCode("0000");
         response.setResponse(tasks);
+        response.setErrorMessage("");
         return response;
     }
 
@@ -102,7 +105,7 @@ class TodoApi {
             
             task.setDescription(newTask.getDescription());
             task.setDate(newTask.getDate());
-            task.setLabelIds(newTask.getLabelIds());
+            task.setLabel(newTask.getLabel());
             // Si existe retornamos el elemento
             response.setCode("0000");
             response.setResponse(task);
@@ -117,15 +120,17 @@ class TodoApi {
      * @return Retorna un mensaje: "Task createed" o error en su defecto.
      */
     @PostMapping("/api/v1/task")
-    public ResponseDto<String> createTask(@RequestBody TaskDto task, @RequestHeader("Authorization") String token) {
+    public ResponseDto<String> createTask(@RequestBody TaskDto task
+    //@RequestHeader("Authorization") String token
+    ) {
         ResponseDto<String> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
-        if (!authBl.validateToken(token)) {
+        /*if (!authBl.validateToken(token)) {
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }
+        }*/
         // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
         // del nuevo elemento
         if (tasks.size() > 0) {
@@ -138,6 +143,7 @@ class TodoApi {
         
         response.setCode("0000");
         response.setResponse("Task created");
+        response.setErrorMessage("");
         return response;
     }
 }

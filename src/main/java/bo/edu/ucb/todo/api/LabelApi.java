@@ -39,6 +39,7 @@ public class LabelApi {
         ResponseDto<List<LabelDto>> response = new ResponseDto<>();
         response.setCode("0000");
         response.setResponse(this.labelBl.getAllLabels());
+        response.setErrorMessage("");
         return response;
     }
 
@@ -71,6 +72,7 @@ public class LabelApi {
             // Si existe retornamos el elemento
             response.setCode("0000");
             response.setResponse(label);
+            response.setErrorMessage("");
             return response;
         }
     }
@@ -83,21 +85,21 @@ public class LabelApi {
      * @return
      */
     @PutMapping("/api/v1/label/{idLabel}")
-    public ResponseDto<LabelDto> updateLabelById( @PathVariable Integer idLabel, @RequestBody LabelDto newLabel, @RequestHeader("Authorization") String token) {
+    public ResponseDto<LabelDto> updateLabelById( @PathVariable Integer idLabel, @RequestBody LabelDto newLabel//, @RequestHeader("Authorization") String token
+    ) {
         ResponseDto<LabelDto> response = new ResponseDto<>();
-        AuthBl authBl = new AuthBl();
+        /*AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }
+        }*/
         //Buscamos el elemento en la lista
         LabelDto label = this.labelBl.getLabelById(idLabel);
         // Si no existe retornamos un error
         if (label == null) {
-            //FIXME: Cambiar el codigo de error debe retornar 404
-            response.setCode("0001");
+            response.setCode("404");
             response.setResponse(null);
             response.setErrorMessage("Label not found");
             return response;
@@ -106,6 +108,7 @@ public class LabelApi {
             // Si existe retornamos el elemento
             response.setCode("0000");
             response.setResponse(label);
+            response.setErrorMessage("");
             return response;
         }
     }
@@ -117,18 +120,49 @@ public class LabelApi {
      * @return Retorna un mensaje: "Label createed" o error en su defecto.
      */
     @PostMapping("/api/v1/label")
-    public ResponseDto<String> createLabel(@RequestBody LabelDto label, @RequestHeader("Authorization") String token) {
+    public ResponseDto<String> createLabel(@RequestBody LabelDto label //@RequestHeader("Authorization") String token
+    ) {
         ResponseDto<String> response = new ResponseDto<>();
-        AuthBl authBl = new AuthBl();
+        /*AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }
+        }*/
         this.labelBl.createLabel(label);
         response.setCode("0000");
         response.setResponse("Label created");
+        response.setErrorMessage("");
         return response;
+    }
+
+    @DeleteMapping("/api/v1/label/{idLabel}")
+    public ResponseDto<String> deleteLabelById(@PathVariable Integer idLabel//, @RequestHeader("Authorization") String token
+    ) {
+        ResponseDto<String> response = new ResponseDto<>();
+        AuthBl authBl = new AuthBl();
+        /*if (!authBl.validateToken(token)) {
+            response.setCode("0001");
+            response.setResponse(null);
+            response.setErrorMessage("Invalid token");
+            return response;
+        }*/
+        //Buscamos el elemento en la lista
+        LabelDto label = this.labelBl.getLabelById(idLabel);
+        // Si no existe retornamos un error
+        if (label == null) {
+            response.setCode("404");
+            response.setResponse(null);
+            response.setErrorMessage("Label not found");
+            return response;
+        } else {
+            this.labelBl.deleteLabelById(idLabel);
+            // Si existe retornamos el elemento
+            response.setCode("0000");
+            response.setResponse("Label deleted");
+            response.setErrorMessage("");
+            return response;
+        }
     }
 }

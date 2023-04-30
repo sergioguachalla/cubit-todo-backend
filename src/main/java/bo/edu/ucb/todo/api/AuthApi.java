@@ -25,6 +25,8 @@ class AuthApi {
         } else {
             response.setCode("0000");
             response.setResponse(tokenDto);
+            response.setErrorMessage("");
+
         }
         return new ResponseEntity<ResponseDto<TokenDto>>(response, null, httpStatus);
 }

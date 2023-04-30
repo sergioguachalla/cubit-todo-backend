@@ -16,15 +16,24 @@ public class AuthBl {
     public static final String KEY = "TigreCampeon2023";
 
     public TokenDto login(LoginDto login) {
-        if ("admin".equals(login.getUsername()) &&
-        "admin".equals(login.getPassword())) {
+        
+
+        if ("jperez".equals(login.getUsername()) &&
+        "12345678".equals(login.getPassword())) {
             TokenDto tokenDto = new TokenDto();
             tokenDto.setAuthToken(generateToken(100, "Juan Perez", "AUTH", 30));
             tokenDto.setRefreshToken(generateToken(100, "Juan Perez", "REFRESH", 60));
+            System.out.println("user " + login.getUsername());
+            System.out.println("Pass " + login.getPassword());
             return tokenDto;
+            
         } else {
+           /*  System.out.println("user" + login.getUsername());
+            System.out.println("Pass" + login.getPassword());*/
             return null;
+            
         }
+        
 
    }
     /*public ResponseDto<TokenDto> login(LoginDto login) {

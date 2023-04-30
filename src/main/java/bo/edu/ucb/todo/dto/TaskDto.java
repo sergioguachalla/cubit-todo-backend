@@ -5,13 +5,20 @@ import java.util.*;
 public class TaskDto {
     private Integer taskId;
     private String description;
-    private Date date;
-    private List<Integer> labelIds;
+    private String date;
+    private String label;
+    private boolean isDone;
 
     public TaskDto() {
     }
 
+    public boolean getIsDone() {
+        return this.isDone;
+    }
 
+    public void setIsDone(boolean isDone){
+        this.isDone = isDone;
+    }
     public Integer getTaskId() {
         return this.taskId;
     }
@@ -28,20 +35,20 @@ public class TaskDto {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return this.date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public List<Integer> getLabelIds() {
-        return this.labelIds;
+    public String getLabel() {
+        return this.label;
     }
 
-    public void setLabelIds(List<Integer> labelIds) {
-        this.labelIds = labelIds;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
 
@@ -51,7 +58,8 @@ public class TaskDto {
             " taskId='" + getTaskId() + "'" +
             ", description='" + getDescription() + "'" +
             ", date='" + getDate() + "'" +
-            ", labelIds='" + getLabelIds() + "'" +
+            ", label='" + getLabel() + "'" +
+            
             "}";
     }
 
