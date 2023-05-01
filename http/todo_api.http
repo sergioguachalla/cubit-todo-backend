@@ -1,4 +1,4 @@
-GET http://localhost:9999/api/v1/task
+GET http://localhost:9998/api/v1/task
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cudWNiLmVkdS5ibyIsIm5hbWUiOiJKdWFuIFBlcmV6IiwidHlwZSI6IkFVVEgiLCJleHAiOjE2ODI0Njg3MzUsInVzZXJJZCI6MTAwfQ.MU8q2NkqCgtGMxQGHggcuBR8J9tlSSCNQBJa7q3CTsk
 
 ###
@@ -19,13 +19,15 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cudWNiL
 
 
 ###
-PUT http://localhost:9999/api/v1/task/2
+PUT http://localhost:9998/api/v1/task/1
 Content-Type: application/json
 Accept: application/json
 //Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ3d3cudWNiLmVkdS5ibyIsIm5hbWUiOiJKdWFuIFBlcmV6IiwidHlwZSI6IkFVVEgiLCJleHAiOjE2ODI0Njg3MzUsInVzZXJJZCI6MTAwfQ.MU8q2NkqCgtGMxQGHggcuBR8J9tlSSCNQBJa7q3CTsk
 
 {
-  "description": "TArea actualizada",
-  "date": "2019-01-01T00:00:00Z"
+  "isDone": true
 }
 ###
+DELETE http://localhost:9998/api/v1/task/3
+Content-Type: application/json
+Accept: application/json

@@ -16,18 +16,17 @@ class TodoApi {
      * @return
      */
     @GetMapping("/api/v1/task")
-    public ResponseDto<List<TaskDto>> getAllTasks(
-       // @RequestHeader("Authorization") String token
+    public ResponseDto<List<TaskDto>> getAllTasks(@RequestHeader("Authorization") String token
         )
          {
         AuthBl authBl = new AuthBl();
-        /*if (!authBl.validateToken(token)) {
+        if (!authBl.validateToken(token)) {
             ResponseDto<List<TaskDto>> response = new ResponseDto<>();
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }*/
+        }
         ResponseDto<List<TaskDto>> response = new ResponseDto<>();
         response.setCode("0000");
         response.setResponse(tasks);
@@ -79,7 +78,8 @@ class TodoApi {
      * @return
      */
     @PutMapping("/api/v1/task/{idTask}")
-    public ResponseDto<TaskDto> updateTaskById( @PathVariable Integer idTask, @RequestBody TaskDto newTask, @RequestHeader("Authorization") String token) {
+    public ResponseDto<TaskDto> updateTaskById( @PathVariable Integer idTask, @RequestBody TaskDto newTask, @RequestHeader("Authorization") String token
+    ) {
         ResponseDto<TaskDto> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
         if (!authBl.validateToken(token)) {
@@ -103,12 +103,15 @@ class TodoApi {
         } else {
             // Actualizamos los atributos de task con los de newTask
             
-            task.setDescription(newTask.getDescription());
+            /*task.setDescription(newTask.getDescription());
             task.setDate(newTask.getDate());
-            task.setLabel(newTask.getLabel());
+            task.setLabel(newTask.getLabel());*/
+            task.setIsDone(!task.getIsDone());
             // Si existe retornamos el elemento
             response.setCode("0000");
             response.setResponse(task);
+            response.setErrorMessage("");
+            
             return response;
         }
     }
@@ -120,17 +123,16 @@ class TodoApi {
      * @return Retorna un mensaje: "Task createed" o error en su defecto.
      */
     @PostMapping("/api/v1/task")
-    public ResponseDto<String> createTask(@RequestBody TaskDto task
-    //@RequestHeader("Authorization") String token
+    public ResponseDto<String> createTask(@RequestBody TaskDto task, @RequestHeader("Authorization") String token
     ) {
         ResponseDto<String> response = new ResponseDto<>();
         AuthBl authBl = new AuthBl();
-        /*if (!authBl.validateToken(token)) {
+        if (!authBl.validateToken(token)) {
             response.setCode("0001");
             response.setResponse(null);
             response.setErrorMessage("Invalid token");
             return response;
-        }*/
+        }
         // Obtenemos el ultimo elemento de la lista  y le sumamos 1 para obtener el id
         // del nuevo elemento
         if (tasks.size() > 0) {
@@ -145,5 +147,37 @@ class TodoApi {
         response.setResponse("Task created");
         response.setErrorMessage("");
         return response;
+    }
+
+    @DeleteMapping("/api/v1/task/{idTask}")
+    public ResponseDto<String> deleteTaskById( @PathVariable Integer idTask, @RequestHeader("Authorization") String token
+    ){
+        ResponseDto<String> response = new ResponseDto<>();
+         AuthBl authBl = new AuthBl();
+        if(!authBl.validateToken(token)) {
+            response.setCode("0001");
+             response.setResponse(null);
+             response.setErrorMessage("Invalid token");
+           return response;
+         }
+        //Buscamos el elemento en la lista
+        TaskDto task = tasks.stream()
+                .filter(t -> t.getTaskId().equals(idTask))
+                .findFirst()
+                .orElse(null);
+        // Si no existe retornamos un error
+        if (task == null) {
+            response.setCode("404");
+            response.setResponse(null);
+            response.setErrorMessage("Label not found");
+            return response;
+        } else {
+            tasks.remove(task);
+            // Si existe retornamos el elemento
+            response.setCode("0000");
+            response.setResponse("Task deleted");
+            response.setErrorMessage("");
+            return response;
+        }
     }
 }
